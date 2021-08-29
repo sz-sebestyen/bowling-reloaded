@@ -1,5 +1,7 @@
-import { strike } from "./patterns";
+import { strike, spare } from "./patterns";
 
 const isStrike = (frame: string): boolean => new RegExp(`^${strike}$`, "i").test(frame);
 
-export { isStrike };
+const isSpare = (frame: string): boolean => new RegExp(`^${spare}$`).test(frame);
+
+export { isStrike, isSpare };
