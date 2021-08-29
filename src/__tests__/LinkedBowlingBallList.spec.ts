@@ -14,6 +14,6 @@ describe("LinkedBowlingBallList", () => {
     const ball1 = list.push(1);
     const ball2 = list.push(2);
 
-    expect(ball1.getNextBall().getScore()).toBe(ball2.getScore());
+    expect(ball1.getNextBall()?.getScore()).toBe(ball2.getScore());
   });
 });

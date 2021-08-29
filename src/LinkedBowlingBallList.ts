@@ -18,7 +18,7 @@ export class LinkedBowlingBallList {
 }
 
 export interface IReadableBowlingBall {
-  getNextBall(): IReadableBowlingBall;
+  getNextBall(): IReadableBowlingBall | null;
   getScore(): number;
 }
 
@@ -34,7 +34,7 @@ export class LinkedBowlingBallListNode implements IReadableBowlingBall {
     return this.score;
   }
 
-  getNextBall(): IReadableBowlingBall {
-    return <IReadableBowlingBall>this.next;
+  getNextBall(): IReadableBowlingBall | null {
+    return this.next;
   }
 }
