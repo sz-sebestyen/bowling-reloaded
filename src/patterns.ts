@@ -17,3 +17,5 @@ const makeOpenframes = (): string => {
 };
 
 export const openframe = makeOpenframes();
+
+export const extraBall = "[-1-9x]";
