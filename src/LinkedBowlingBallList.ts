@@ -22,7 +22,7 @@ export interface IReadableBowlingBall {
   getScore(): number;
 }
 
-export class LinkedBowlingBallListNode implements IReadableBowlingBall {
+class LinkedBowlingBallListNode implements IReadableBowlingBall {
   private score: number;
   next: LinkedBowlingBallListNode | null = null;
 
