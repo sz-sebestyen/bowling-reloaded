@@ -18,3 +18,7 @@ export const getExtraBallScore = (ball: string): number => {
   const correctedBall = ball.replace("-", "0").replace(/x/i, "10");
   return parseInt(correctedBall);
 };
+
+export const getExtraframeScores = (frame: string): number[] => {
+  return frame.split(" ").map((ball) => getExtraBallScore(ball));
+};

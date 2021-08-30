@@ -16,6 +16,12 @@ export class Frame {
   }
 }
 
+export class ExtraFrame extends Frame {
+  getScore(): number {
+    return 0;
+  }
+}
+
 abstract class FrameWithExtraScore extends Frame {
   protected getExtraScore(extraBallCount: number): number {
     let score = 0;

@@ -1,8 +1,8 @@
 import { getValidatedBowlingGame } from "./getValidatedBowlingGame";
-import { IReadableBowlingBall, LinkedBowlingBallList } from "./LinkedBowlingBallList";
-import { isSpare, isOpenframe } from "./frameMatchers";
-import { Openframe, Spare, Strike } from "./Frames";
-import { getOpenframeScores, getSpareScores, getExtraBallScore } from "./frameScores";
+import { FrameList } from "./FrameList";
+import { isSpare, isOpenframe, isStrike } from "./frameMatchers";
+import { Openframe, Spare, Strike, ExtraFrame } from "./Frames";
+import { getOpenframeScores, getSpareScores, getExtraframeScores } from "./frameScores";
 import { FrameFactory } from "./FrameFactory";
 
 const frameFactory = new FrameFactory();
@@ -10,27 +10,28 @@ const frameFactory = new FrameFactory();
 frameFactory.register("openframe", Openframe);
 frameFactory.register("spare", Spare);
 frameFactory.register("strike", Strike);
+frameFactory.register("extraframe", ExtraFrame);
 
 export const calculateScore = (input: string): number => {
-  const game = getValidatedBowlingGame(input);
+  const validFrames = getValidatedBowlingGame(input);
 
-  const ballList = new LinkedBowlingBallList();
+  const frames = new FrameList(frameFactory);
 
-  const getLinkedBalls = (scores: number[]): IReadableBowlingBall[] => scores.map((score) => ballList.push(score));
-
-  const frames = game.frames.map((frame) => {
+  validFrames.forEach((frame) => {
     if (isOpenframe(frame)) {
-      return frameFactory.makeFrame("openframe", getLinkedBalls(getOpenframeScores(frame)));
+      frames.push("openframe", getOpenframeScores(frame));
     } else if (isSpare(frame)) {
-      return frameFactory.makeFrame("spare", getLinkedBalls(getSpareScores(frame)));
+      frames.push("spare", getSpareScores(frame));
+    } else if (isStrike(frame)) {
+      frames.push("strike", [10]);
     } else {
-      return frameFactory.makeFrame("strike", getLinkedBalls([10]));
+      frames.push("extraframe", getExtraframeScores(frame));
     }
   });
 
-  game.extraBalls.forEach((extraBall) => {
-    ballList.push(getExtraBallScore(extraBall));
-  });
-
-  return frames.reduce((sum, currentFrame) => sum + currentFrame.getScore(), 0);
+  let totalScore = 0;
+  for (const currentFrame of frames) {
+    totalScore += currentFrame.getScore();
+  }
+  return totalScore;
 };
