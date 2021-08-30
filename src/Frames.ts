@@ -14,7 +14,9 @@ export class Frame {
   protected getOwnScore(): number {
     return this.balls.reduce((sum, currentBall) => currentBall.getScore() + sum, 0);
   }
+}
 
+abstract class FrameWithExtraScore extends Frame {
   protected getExtraScore(extraBallCount: number): number {
     let score = 0;
 
@@ -31,20 +33,16 @@ export class Frame {
   }
 }
 
-export class Strike extends Frame {
+export class Strike extends FrameWithExtraScore {
   getScore(): number {
     return this.getOwnScore() + this.getExtraScore(2);
   }
 }
 
-export class Spare extends Frame {
+export class Spare extends FrameWithExtraScore {
   getScore(): number {
     return this.getOwnScore() + this.getExtraScore(1);
   }
 }
 
-export class Openframe extends Frame {
-  getScore(): number {
-    return this.getOwnScore();
-  }
-}
+export const Openframe = Frame;
