@@ -1,6 +1,6 @@
 import { IReadableBowlingBall } from "./LinkedBowlingBallList";
 
-abstract class Frame {
+export abstract class Frame {
   readonly balls: IReadableBowlingBall[];
 
   constructor(balls: IReadableBowlingBall[]) {
@@ -30,30 +30,18 @@ abstract class Frame {
 }
 
 export class Strike extends Frame {
-  constructor(balls: IReadableBowlingBall[]) {
-    super(balls);
-  }
-
   getScore(): number {
     return this.getOwnScore() + this.getExtraScore(2);
   }
 }
 
 export class Spare extends Frame {
-  constructor(balls: IReadableBowlingBall[]) {
-    super(balls);
-  }
-
   getScore(): number {
     return this.getOwnScore() + this.getExtraScore(1);
   }
 }
 
 export class Openframe extends Frame {
-  constructor(balls: IReadableBowlingBall[]) {
-    super(balls);
-  }
-
   getScore(): number {
     return this.getOwnScore();
   }
