@@ -13,3 +13,8 @@ export const getSpareScores = (frame: string): number[] => {
 
   return [firstBallScore, 10 - firstBallScore];
 };
+
+export const getExtraBallScore = (ball: string): number => {
+  const correctedBall = ball.replace("-", "0").replace(/x/i, "10");
+  return parseInt(correctedBall);
+};
