@@ -2,9 +2,9 @@
   "name": "bowling-reloaded",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./build/index.js",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./build/index.js",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watchAll",
     "build": "tsc"
