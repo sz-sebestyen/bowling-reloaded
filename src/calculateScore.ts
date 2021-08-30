@@ -1,40 +1,30 @@
 import { getValidatedBowlingGame } from "./getValidatedBowlingGame";
-import { LinkedBowlingBallList } from "./LinkedBowlingBallList";
-import { isStrike, isSpare, isOpenframe } from "./frameMatchers";
-import { Frame, Openframe, Spare, Strike } from "./Frames";
+import { IReadableBowlingBall, LinkedBowlingBallList } from "./LinkedBowlingBallList";
+import { isSpare, isOpenframe } from "./frameMatchers";
+import { Openframe, Spare, Strike } from "./Frames";
 import { getOpenframeScores, getSpareScores, getExtraBallScore } from "./frameScores";
 import { FrameFactory } from "./FrameFactory";
+
+const frameFactory = new FrameFactory();
+
+frameFactory.register("openframe", Openframe);
+frameFactory.register("spare", Spare);
+frameFactory.register("strike", Strike);
 
 export const calculateScore = (input: string): number => {
   const game = getValidatedBowlingGame(input);
 
   const ballList = new LinkedBowlingBallList();
 
-  const frameFactory = new FrameFactory();
+  const getLinkedBalls = (scores: number[]): IReadableBowlingBall[] => scores.map((score) => ballList.push(score));
 
-  frameFactory.register("openframe", Openframe);
-  frameFactory.register("spare", Spare);
-  frameFactory.register("strike", Strike);
-
-  const frames: Frame[] = [];
-
-  game.frames.forEach((frame) => {
+  const frames = game.frames.map((frame) => {
     if (isOpenframe(frame)) {
-      const [firstBallScore, secondBallScore] = getOpenframeScores(frame);
-
-      const balls = [ballList.push(firstBallScore), ballList.push(secondBallScore)];
-
-      frames.push(frameFactory.makeFrame("openframe", balls));
+      return frameFactory.makeFrame("openframe", getLinkedBalls(getOpenframeScores(frame)));
     } else if (isSpare(frame)) {
-      const [firstBallScore, secondBallScore] = getSpareScores(frame);
-
-      const balls = [ballList.push(firstBallScore), ballList.push(secondBallScore)];
-
-      frames.push(frameFactory.makeFrame("spare", balls));
-    } else if (isStrike(frame)) {
-      const balls = [ballList.push(10)];
-
-      frames.push(frameFactory.makeFrame("strike", balls));
+      return frameFactory.makeFrame("spare", getLinkedBalls(getSpareScores(frame)));
+    } else {
+      return frameFactory.makeFrame("strike", getLinkedBalls([10]));
     }
   });
 
