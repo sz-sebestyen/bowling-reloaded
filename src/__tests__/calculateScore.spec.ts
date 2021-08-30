@@ -44,4 +44,18 @@ describe("calculateScore", () => {
       });
     });
   });
+
+  describe("when the input is NOT a valid bowling game string", () => {
+    it("should return 0", () => {
+      // given
+      const input = "";
+      const expectedScore = 0;
+
+      // when
+      const result = calculateScore(input);
+
+      // then
+      expect(result).toBe(expectedScore);
+    });
+  });
 });
