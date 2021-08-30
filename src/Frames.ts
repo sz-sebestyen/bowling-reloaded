@@ -1,19 +1,21 @@
 import { IReadableBowlingBall } from "./LinkedBowlingBallList";
 
-export abstract class Frame {
-  readonly balls: IReadableBowlingBall[];
+export class Frame {
+  protected balls: IReadableBowlingBall[];
 
   constructor(balls: IReadableBowlingBall[]) {
     this.balls = balls;
   }
 
-  abstract getScore(): number;
+  getScore(): number {
+    return this.getOwnScore();
+  }
 
-  getOwnScore(): number {
+  protected getOwnScore(): number {
     return this.balls.reduce((sum, currentBall) => currentBall.getScore() + sum, 0);
   }
 
-  getExtraScore(extraBallCount: number): number {
+  protected getExtraScore(extraBallCount: number): number {
     let score = 0;
 
     let nextExtraBall = this.balls[this.balls.length - 1].getNextBall();
